@@ -7,5 +7,10 @@ namespace TaxManager.Models
         public decimal tax;
         public DateTime start;
         public TimeSpan duration;
+
+        internal bool IncludesDate(DateTime date)
+        {
+            return (start <= date) && (date < start + duration);
+        }
     }
 }

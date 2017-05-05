@@ -45,5 +45,41 @@ namespace TaxManager.Tests
             Assert.Equal(366, vilnius.taxes[4].duration.TotalDays);
         }
 
+        [Fact]
+        public void GetTaxOnDate_VilniusOn20160101()
+        {
+            decimal result = vilnius.GetTaxOnDate(new DateTime(2016,1,1));
+            Assert.Equal(0.1, Convert.ToDouble(result), 2);
+        }
+
+        [Fact]
+        public void GetTaxOnDate_VilniusOn20160102()
+        {
+            decimal result = vilnius.GetTaxOnDate(new DateTime(2016,1,2));
+            Assert.Equal(0.2, Convert.ToDouble(result), 2);
+        }
+
+        [Fact]
+        public void GetTaxOnDate_VilniusOn20160502()
+        {
+            decimal result = vilnius.GetTaxOnDate(new DateTime(2016,5,02));
+            Assert.Equal(0.4, Convert.ToDouble(result), 2);
+        }
+
+        [Fact]
+        public void GetTaxOnDate_VilniusOn20160710()
+        {
+            decimal result = vilnius.GetTaxOnDate(new DateTime(2016,7,10));
+            Assert.Equal(0.2, Convert.ToDouble(result), 2);
+        }
+
+        [Fact]
+        public void GetTaxOnDate_VilniusOn20160316()
+        {
+            decimal result = vilnius.GetTaxOnDate(new DateTime(2016,3,16));
+            Assert.Equal(0.2, Convert.ToDouble(result), 2);
+        }
+
+
     }
 }

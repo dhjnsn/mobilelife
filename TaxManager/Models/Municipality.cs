@@ -15,6 +15,16 @@ namespace TaxManager.Models
             taxes = new List<ScheduledTax>();
         }
 
+        public decimal GetTaxOnDate(DateTime date)
+        {
+            foreach (ScheduledTax scheduledTax in taxes)
+                if (scheduledTax.IncludesDate(date))
+                    return scheduledTax.tax;
+
+            // No tax scheduled for date => no tax is levied.
+            return 0M;
+        }
+
         public void AddScheduledTax(decimal tax, string start, string duration)
         {
 
