@@ -7,19 +7,18 @@ namespace TaxManager.Models
     public class Municipality
     {
 
-        public string name;
-        public List<ScheduledTax> taxes;
+        public string Name { get; set; }
+        public List<ScheduledTax> Taxes { get; set; }
 
         public Municipality()
         {
-            taxes = new List<ScheduledTax>();
+            Taxes = new List<ScheduledTax>();
         }
-
         public decimal GetTaxOnDate(DateTime date)
         {
-            foreach (ScheduledTax scheduledTax in taxes)
+            foreach (ScheduledTax scheduledTax in Taxes)
                 if (scheduledTax.IncludesDate(date))
-                    return scheduledTax.tax;
+                    return scheduledTax.Tax;
 
             // No tax scheduled for date => no tax is levied.
             return 0M;
@@ -30,22 +29,23 @@ namespace TaxManager.Models
 
             ScheduledTax scheduledTax = new ScheduledTax()
             {
-                tax = tax,
-                start = DateTime.Parse(start),
-                duration = TimeSpan.Parse(duration)
+                Tax = tax,
+                Start = DateTime.Parse(start),
+                Duration = TimeSpan.Parse(duration)
             };
 
-            int index = taxes.BinarySearch(scheduledTax, new ScheduledTaxComparer());
+            int index = Taxes.BinarySearch(scheduledTax,
+                new ScheduledTaxComparer());
             if (index < 0)
                 index = ~index;
-            taxes.Insert(index, scheduledTax);
+            Taxes.Insert(index, scheduledTax);
         }
 
         class ScheduledTaxComparer : IComparer<ScheduledTax>
         {
             public int Compare(ScheduledTax a, ScheduledTax b)
             {
-                return a.duration.CompareTo(b.duration);
+                return a.Duration.CompareTo(b.Duration);
             }
         }
     }

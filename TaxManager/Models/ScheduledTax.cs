@@ -4,13 +4,13 @@ namespace TaxManager.Models
 {
     public class ScheduledTax
     {
-        public decimal tax;
-        public DateTime start;
-        public TimeSpan duration;
+        public decimal Tax { get; set; }
+        public DateTime Start { get; set; }
+        public TimeSpan Duration { get; set; }
 
         internal bool IncludesDate(DateTime date)
         {
-            return (start <= date) && (date < start + duration);
+            return (Start <= date) && (date < Start + Duration);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TaxManager.Tests
 
         public MunicipalityTests()
         {
-            vilnius = new Municipality() { name = "Vilnius" };
+            vilnius = new Municipality() { Name = "Vilnius" };
             vilnius.AddScheduledTax(0.2M, "2016-01-01", "366");
             vilnius.AddScheduledTax(0.1M, "2016-05-09", "7");
             vilnius.AddScheduledTax(0.1M, "2016-01-01", "1");
@@ -23,26 +23,26 @@ namespace TaxManager.Tests
         [Fact]
         public void AddScheduledTax_DailyTaxIsFirst()
         {
-            Assert.Equal(1, vilnius.taxes[0].duration.TotalDays);
-            Assert.Equal(1, vilnius.taxes[1].duration.TotalDays);
+            Assert.Equal(1, vilnius.Taxes[0].Duration.TotalDays);
+            Assert.Equal(1, vilnius.Taxes[1].Duration.TotalDays);
         }
 
         [Fact]
         public void AddScheduledTax_WeeklyTaxIsAfterDailyTax()
         {
-            Assert.Equal(7, vilnius.taxes[2].duration.TotalDays);
+            Assert.Equal(7, vilnius.Taxes[2].Duration.TotalDays);
         }
 
         [Fact]
         public void AddScheduledTax_MonthlyTaxIsAfterWeeklyTax()
         {
-            Assert.Equal(31, vilnius.taxes[3].duration.TotalDays);
+            Assert.Equal(31, vilnius.Taxes[3].Duration.TotalDays);
         }
 
         [Fact]
         public void AddScheduledTax_YearlyTaxIsAfterMonthlyTax()
         {
-            Assert.Equal(366, vilnius.taxes[4].duration.TotalDays);
+            Assert.Equal(366, vilnius.Taxes[4].Duration.TotalDays);
         }
 
         [Fact]
@@ -79,7 +79,5 @@ namespace TaxManager.Tests
             decimal result = vilnius.GetTaxOnDate(new DateTime(2016,3,16));
             Assert.Equal(0.2, Convert.ToDouble(result), 2);
         }
-
-
     }
 }
