@@ -19,6 +19,10 @@ namespace TaxManager
                 .UseStartup<Startup>()
                 .Build();
 
+            // Tell LiteDB which property to use as Id
+            LiteDB.BsonMapper.Global.Entity<TaxManager.Models.
+                Municipality>().Id(x => x.Name);
+
             host.Run();
         }
     }
