@@ -20,8 +20,12 @@ namespace TaxManager
                 .Build();
 
             // Tell LiteDB which property to use as Id
-            LiteDB.BsonMapper.Global.Entity<TaxManager.Models.
-                Municipality>().Id(x => x.Name);
+            LiteDB.BsonMapper.Global.Entity<Models.Municipality>()
+                .Id(x => x.Name);
+
+            // Create an index on the lowercase name
+            LiteDB.BsonMapper.Global.Entity<Models.Municipality>()
+                .Index<String>("Name_lowercase", x => x.Name.ToLower(), true);
 
             host.Run();
         }

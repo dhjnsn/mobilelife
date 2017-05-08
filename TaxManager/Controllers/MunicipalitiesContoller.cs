@@ -10,29 +10,25 @@ namespace TaxManager.Controllers
     [Route("api/[controller]")]
     public class MunicipalitiesController : Controller
     {
-        readonly LiteRepository repository;
+        readonly IRepositoryFacade<Municipality> repoFacade;
 
-        public MunicipalitiesController(LiteRepository repo)
+        public MunicipalitiesController(IRepositoryFacade<Municipality> rf)
         {
-            repository = repo;
+            repoFacade = rf;
         }
 
         [HttpGet]
         public IEnumerable<Municipality> Get()
         {
-            return repository.Fetch<Municipality>(Query.All());
+            return repoFacade.GetAll();
         }
 
         // PUT api/municipalities
         [HttpPut]
         public void Put([FromBody] IEnumerable<Municipality> municipalities)
         {
-            using (var transaction = repository.Database.BeginTrans())
-            {
-                repository.Database.DropCollection("municipality");
-                repository.Insert(municipalities, "municipality");
-                transaction.Commit();
-            }
+            repoFacade.ReplaceAll(municipalities);
         }
+
     }
 }
