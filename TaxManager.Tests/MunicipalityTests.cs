@@ -26,31 +26,6 @@ namespace TaxManager.Tests
         }
 
         [Fact]
-        public void AddScheduledTax_DailyTaxIsFirst()
-        {
-            Assert.Equal(1, vilnius.Taxes[0].Duration.TotalDays);
-            Assert.Equal(1, vilnius.Taxes[1].Duration.TotalDays);
-        }
-
-        [Fact]
-        public void AddScheduledTax_WeeklyTaxIsAfterDailyTax()
-        {
-            Assert.Equal(7, vilnius.Taxes[2].Duration.TotalDays);
-        }
-
-        [Fact]
-        public void AddScheduledTax_MonthlyTaxIsAfterWeeklyTax()
-        {
-            Assert.Equal(31, vilnius.Taxes[3].Duration.TotalDays);
-        }
-
-        [Fact]
-        public void AddScheduledTax_YearlyTaxIsAfterMonthlyTax()
-        {
-            Assert.Equal(366, vilnius.Taxes[4].Duration.TotalDays);
-        }
-
-        [Fact]
         public void AddScheduledTax_ReturnsFalse_OnInvalidStartAndDuration()
         {
             Assert.False(new Municipality()

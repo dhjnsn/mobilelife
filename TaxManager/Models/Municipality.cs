@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace TaxManager.Models
@@ -8,15 +9,25 @@ namespace TaxManager.Models
     {
 
         public string Name { get; set; }
-        public List<ScheduledTax> Taxes { get; set; }
+        public List<ScheduledTax> DailyTaxes { get; set; }
+        public List<ScheduledTax> WeeklyTaxes { get; set; }
+        public List<ScheduledTax> MonthlyTaxes { get; set; }
+        public List<ScheduledTax> YearlyTaxes { get; set; }
 
         public Municipality()
         {
-            Taxes = new List<ScheduledTax>();
+            DailyTaxes = new List<ScheduledTax>();
+            WeeklyTaxes = new List<ScheduledTax>();
+            MonthlyTaxes = new List<ScheduledTax>();
+            YearlyTaxes = new List<ScheduledTax>();
         }
+
         public decimal GetTaxOnDate(DateTime date)
         {
-            foreach (ScheduledTax scheduledTax in Taxes)
+            IEnumerable<ScheduledTax> taxes =  DailyTaxes.Concat(WeeklyTaxes)
+                .Concat(MonthlyTaxes).Concat(YearlyTaxes);
+
+            foreach (ScheduledTax scheduledTax in taxes)
                 if (scheduledTax.IncludesDate(date))
                     return scheduledTax.Tax;
 
@@ -34,49 +45,51 @@ namespace TaxManager.Models
                 Duration = duration
             };
 
-            if (!IsValidStartAndDuration(start, duration))
+            if (IsDailyTax(scheduledTax))
+                UpdateScheduledTaxList(DailyTaxes, scheduledTax);
+            else if (IsWeeklyTax(scheduledTax))
+                UpdateScheduledTaxList(WeeklyTaxes, scheduledTax);
+            else if (IsMonthlyTax(scheduledTax))
+                UpdateScheduledTaxList(MonthlyTaxes, scheduledTax);
+            else if (IsYearlyTax(scheduledTax))
+                UpdateScheduledTaxList(YearlyTaxes, scheduledTax);
+            else 
                 return false;
-
-            int index = Taxes.BinarySearch(scheduledTax,
-                new ScheduledTaxComparer());
-            if (index < 0)
-                index = ~index;
-            Taxes.Insert(index, scheduledTax);
 
             return true;
         }
 
-        class ScheduledTaxComparer : IComparer<ScheduledTax>
+        private void UpdateScheduledTaxList(List<ScheduledTax> list, ScheduledTax tax)
         {
-            public int Compare(ScheduledTax a, ScheduledTax b)
-            {
-                return a.Duration.CompareTo(b.Duration);
-            }
+            int index = list.FindIndex(x => x.Start == tax.Start);
+            if (index != -1)
+                list[index] = tax;
+            else
+                list.Add(tax);
         }
 
-        private bool IsValidStartAndDuration(DateTime start, TimeSpan duration)
+        public bool IsDailyTax(ScheduledTax tax)
         {
-            double days = duration.TotalDays;
+            return tax.Duration.TotalDays == 1;
+        }
 
-            if (days % 1 != 0)
-                return false;
+        public bool IsWeeklyTax(ScheduledTax tax)
+        {
+            return tax.Duration.TotalDays == 7 &&
+                tax.Start.DayOfWeek == DayOfWeek.Monday;
+        }
 
-            if (days == 1)
-                return true;
+        public bool IsMonthlyTax(ScheduledTax tax)
+        {
+            return tax.Start.Day == 1 && tax.Duration.TotalDays ==
+                DateTime.DaysInMonth(tax.Start.Year, tax.Start.Month);
+        }
 
-            if (days == 7)
-                return start.DayOfWeek == DayOfWeek.Monday;
-
-            if (DateTime.DaysInMonth(start.Year, start.Month) == days)
-                return start.Day == 1;
-
-            if (days == 365)
-                return start.DayOfYear == 1;
-
-            if (days == 366 && DateTime.IsLeapYear(start.Year))
-                return start.DayOfYear == 1;
-
-            return false;
+        public bool IsYearlyTax(ScheduledTax tax)
+        {
+            return tax.Start.DayOfYear == 1 && (tax.Duration.TotalDays == 365 ||
+                (tax.Duration.TotalDays == 366 &&
+                 DateTime.IsLeapYear(tax.Start.Year)));
         }
     }
 }
