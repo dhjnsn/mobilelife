@@ -13,11 +13,16 @@ namespace TaxManager.Tests
         public MunicipalityTests()
         {
             vilnius = new Municipality() { Name = "Vilnius" };
-            vilnius.AddScheduledTax(0.2M, "2016-01-01", "366");
-            vilnius.AddScheduledTax(0.1M, "2016-05-09", "7");
-            vilnius.AddScheduledTax(0.1M, "2016-01-01", "1");
-            vilnius.AddScheduledTax(0.4M, "2016-05-01", "31");
-            vilnius.AddScheduledTax(0.1M, "2016-12-25", "1");
+            vilnius.AddScheduledTax(0.2M, DateTime.Parse("2016-01-01"),
+                TimeSpan.Parse("366"));
+            vilnius.AddScheduledTax(0.1M, DateTime.Parse("2016-05-09"),
+                TimeSpan.Parse("7"));
+            vilnius.AddScheduledTax(0.1M, DateTime.Parse("2016-01-01"),
+                TimeSpan.Parse("1"));
+            vilnius.AddScheduledTax(0.4M, DateTime.Parse("2016-05-01"),
+                TimeSpan.Parse("31"));
+            vilnius.AddScheduledTax(0.1M, DateTime.Parse("2016-12-25"),
+                TimeSpan.Parse("1"));
         }
 
         [Fact]

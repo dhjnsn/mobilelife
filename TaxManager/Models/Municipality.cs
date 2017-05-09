@@ -24,14 +24,14 @@ namespace TaxManager.Models
             return 0M;
         }
 
-        public void AddScheduledTax(decimal tax, string start, string duration)
+        public void AddScheduledTax(decimal tax, DateTime start, TimeSpan duration)
         {
 
             ScheduledTax scheduledTax = new ScheduledTax()
             {
                 Tax = tax,
-                Start = DateTime.Parse(start),
-                Duration = TimeSpan.Parse(duration)
+                Start = start,
+                Duration = duration
             };
 
             int index = Taxes.BinarySearch(scheduledTax,

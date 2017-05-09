@@ -31,8 +31,8 @@ namespace TaxManager.Controllers
         }
 
         [HttpPut( "{name}/taxes/{start}/{duration}")]
-        public IActionResult Put(string name, string start, string duration,
-            [FromBody]decimal tax)
+        public IActionResult Put(string name, DateTime start,
+            TimeSpan duration, [FromBody]decimal tax)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

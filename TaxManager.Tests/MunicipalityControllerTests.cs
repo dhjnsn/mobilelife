@@ -20,7 +20,8 @@ namespace TaxManager.Tests
                     .Returns(berlin);
 
             var ctrl = new MunicipalitiesController(mockRepository.Object);
-            var response =ctrl.Put("berlin", "2017-01-01", "1", 0.5M);
+            var response = ctrl.Put("berlin", DateTime.Parse("2017-01-01"),
+                TimeSpan.Parse("1"), 0.5M);
 
             Assert.Equal(1, berlin.Taxes.Count);
             Assert.IsType<Microsoft.AspNetCore.Mvc.OkResult>(response);
@@ -40,7 +41,8 @@ namespace TaxManager.Tests
                     .Callback<Municipality>(m => berlin = m);
 
             var ctrl = new MunicipalitiesController(mockRepository.Object);
-            var response = ctrl.Put("berlin", "2017-01-01", "1", 0.5M);
+            var response = ctrl.Put("berlin", DateTime.Parse("2017-01-01"),
+                TimeSpan.Parse("1"), 0.5M);
 
             Assert.NotNull(berlin);
             Assert.Equal(0.5, Convert.ToDouble(berlin.Taxes[0].Tax), 2);
@@ -55,7 +57,7 @@ namespace TaxManager.Tests
             ctrl.ModelState.AddModelError("error", "message");
 
             // It doesn't matter what arguements are passed
-            var response = ctrl.Put("City","", "", 0M);
+            var response = ctrl.Put("", new DateTime(), new TimeSpan(), 0M);
 
             Assert.IsType<Microsoft.AspNetCore.Mvc.
                 BadRequestObjectResult>(response);
