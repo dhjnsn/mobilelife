@@ -41,7 +41,10 @@ namespace TaxManager.Controllers
             if (municipality == null)
                 municipality = new Municipality() { Name = name };
 
-            municipality.AddScheduledTax(tax, start, duration);
+            if (!municipality.AddScheduledTax(tax, start, duration))
+                return NotFound("Not a valid start and duration combination: "
+                    + start + " " + duration);
+
             repoFacade.Upsert(municipality);
             return Ok();
         }

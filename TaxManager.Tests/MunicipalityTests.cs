@@ -51,6 +51,32 @@ namespace TaxManager.Tests
         }
 
         [Fact]
+        public void AddScheduledTax_ReturnsFalse_OnInvalidStartAndDuration()
+        {
+            Assert.False(new Municipality()
+                .AddScheduledTax(0M, DateTime.Now, TimeSpan.FromDays(20)));
+            Assert.False(new Municipality()
+                .AddScheduledTax(0M, DateTime.Now, new TimeSpan(25,0,0)));
+        }
+
+        [Fact]
+        public void AddScheduledTax_ReturnsTrue_OnValidStartAndDuration()
+        {
+            Assert.True(new Municipality()
+                .AddScheduledTax(0M, DateTime.Now, TimeSpan.FromDays(1)));
+            Assert.True(new Municipality().AddScheduledTax(0M,
+                new DateTime(2017,5,8), TimeSpan.FromDays(7)));
+            Assert.True(new Municipality().AddScheduledTax(0M,
+                new DateTime(2017,2,1), TimeSpan.FromDays(28)));
+            Assert.True(new Municipality().AddScheduledTax(0M,
+                new DateTime(2016,2,1), TimeSpan.FromDays(29)));
+            Assert.True(new Municipality().AddScheduledTax(0M,
+                new DateTime(2015,1,1), TimeSpan.FromDays(365)));
+            Assert.True(new Municipality().AddScheduledTax(0M,
+                new DateTime(2000,1,1), TimeSpan.FromDays(366)));
+        }
+
+        [Fact]
         public void GetTaxOnDate_VilniusOn20160101()
         {
             decimal result = vilnius.GetTaxOnDate(new DateTime(2016,1,1));

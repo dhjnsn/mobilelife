@@ -62,5 +62,16 @@ namespace TaxManager.Tests
             Assert.IsType<Microsoft.AspNetCore.Mvc.
                 BadRequestObjectResult>(response);
         }
+
+        [Fact]
+        public void Put_ReturnsNotFound_OnInvalidStartAndDuration()
+        {
+            var mockRepository = new Mock<IRepositoryFacade<Municipality>>();
+            var ctrl = new MunicipalitiesController(mockRepository.Object);
+            var response = ctrl.Put("", DateTime.Now, TimeSpan.FromDays(2), 0M);
+
+            Assert.IsType<Microsoft.AspNetCore.Mvc.
+                NotFoundObjectResult>(response);
+        }
     }
 }
