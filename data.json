@@ -1,0 +1,45 @@
+[
+  {
+    "name": "Copenhagen",
+    "dailyTaxes": [],
+    "weeklyTaxes": [],
+    "monthlyTaxes": [],
+    "yearlyTaxes": [
+      {
+        "tax": 0.7,
+        "start": "2016-01-01T00:00:00+01:00",
+        "duration": "366.00:00:00"
+      }
+    ]
+  },
+  {
+    "name": "Vilnius",
+    "dailyTaxes": [
+      {
+        "tax": 0.1,
+        "start": "2016-01-01T00:00:00+01:00",
+        "duration": "1.00:00:00"
+      },
+      {
+        "tax": 0.1,
+        "start": "2016-12-25T00:00:00+01:00",
+        "duration": "1.00:00:00"
+      }
+    ],
+    "weeklyTaxes": [],
+    "monthlyTaxes": [
+      {
+        "tax": 0.4,
+        "start": "2016-05-01T00:00:00+01:00",
+        "duration": "31.00:00:00"
+      }
+    ],
+    "yearlyTaxes": [
+      {
+        "tax": 0.2,
+        "start": "2016-01-01T00:00:00+01:00",
+        "duration": "366.00:00:00"
+      }
+	]
+  }
+]
