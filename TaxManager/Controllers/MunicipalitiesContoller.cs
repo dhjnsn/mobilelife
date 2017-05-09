@@ -30,5 +30,21 @@ namespace TaxManager.Controllers
             repoFacade.ReplaceAll(municipalities);
         }
 
+        [HttpPut( "{name}/taxes/{start}/{duration}")]
+        public IActionResult Put(string name, string start, string duration,
+            [FromBody]decimal tax)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Municipality municipality = repoFacade.GetByName(name);
+
+            if (municipality == null)
+                municipality = new Municipality() { Name = name };
+
+            municipality.AddScheduledTax(tax, start, duration);
+            repoFacade.Upsert(municipality);
+            return Ok();
+        }
     }
 }

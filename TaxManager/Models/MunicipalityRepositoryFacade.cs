@@ -16,6 +16,16 @@ namespace TaxManager.Models
             return repository.Fetch<Municipality>(LiteDB.Query.All());
         }
 
+        public Municipality GetByName(string name)
+        {
+            return repository.SingleOrDefault<Municipality>(
+                    LiteDB.Query.EQ("Name_lowercase", name.ToLower()));
+        }
+
+        public void Upsert(Municipality municipality)
+        {
+            repository.Upsert(municipality);
+        }
 
         public void ReplaceAll(IEnumerable<Municipality> municipalities)
         {
